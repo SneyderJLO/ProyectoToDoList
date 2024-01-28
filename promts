@@ -1,0 +1,5 @@
+node --version //ver la version
+npm install -g create-react-app //instalar create react app
+create-react-app todolist // creando mi app react Le da anciedad a npm con las letras capital
+npm start
+

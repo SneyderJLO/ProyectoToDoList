@@ -1,34 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const Tarea = (props) => {
   const [nombreTarea, setNombreTarea] = useState("Hacer algo");
   const [responsableTarea, setResponsableTarea] = useState("Juan");
   const [estadoTarea, setEstadoTarea] = useState("No Iniciada");
 
+  useEffect(() => {
+    const storedTarea = JSON.parse(localStorage.getItem(`tarea_${props.tareaIndex}`));
+    if (storedTarea) {
+      setNombreTarea(storedTarea.nombreTarea);
+      setResponsableTarea(storedTarea.responsableTarea);
+      setEstadoTarea(storedTarea.estadoTarea);
+    }
+  }, [props.tareaIndex]);
+
   const eliminar = () => {
-    // Lógica para eliminar la tarea
     console.log("Eliminar tarea");
+    props.onEliminar(props.tareaIndex);
+    localStorage.removeItem(`tarea_${props.tareaIndex}`);
+  };
+
+  const guardarCambios = () => {
+    console.log("Guardando cambios:", { nombreTarea, responsableTarea, estadoTarea });
+    const updatedTarea = {
+      nombreTarea,
+      responsableTarea,
+      estadoTarea,
+    };
+    localStorage.setItem(`tarea_${props.tareaIndex}`, JSON.stringify(updatedTarea));
   };
 
   const tareaNoIniciada = () => {
-    // Lógica para marcar la tarea como No Iniciada
     setEstadoTarea("No Iniciada");
+    guardarCambios();
   };
 
   const tareaEnCurso = () => {
-    // Lógica para marcar la tarea como En Curso
     setEstadoTarea("En Curso");
+    guardarCambios();
   };
 
   const tareaFinalizada = () => {
-    // Lógica para marcar la tarea como Finalizada
     setEstadoTarea("Finalizada");
+    guardarCambios();
   };
 
   return (
-    <div className="card">
-      <div className="card-header d-flex justify-content-end">
-        <button type="button" className="btn btn-danger" onClick={eliminar}>
+    <div className="card" style={{ width: '18rem' }}>
+      <div className="card-header d-flex justify-content-between">
+        <span>{estadoTarea}</span>
+        <button type="button" className="btn btn-danger" onClick={() => eliminar(props.tareaIndex)}>
           Eliminar
         </button>
       </div>
@@ -38,6 +59,7 @@ const Tarea = (props) => {
             type="text"
             value={nombreTarea}
             onChange={(e) => setNombreTarea(e.target.value)}
+            onBlur={guardarCambios}
           />
         </h5>
         <p className="card-text">
@@ -46,6 +68,7 @@ const Tarea = (props) => {
             type="text"
             value={responsableTarea}
             onChange={(e) => setResponsableTarea(e.target.value)}
+            onBlur={guardarCambios}
           />
         </p>
       </div>

@@ -1,8 +1,11 @@
 import React from 'react'
 import { useState } from 'react';
 
-const Algo = () => {
+const Algo = (props) => {
+  console.log("Aqui");
+  console.log(props.propiedad)
   const [variable, setVariable] = useState("Variable");
+  //etVariable(props.propiedad);
   //let variable = "variable";
   const alterarVariable = (newValue) => {
     setVariable(newValue)

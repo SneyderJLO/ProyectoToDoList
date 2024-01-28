@@ -1,29 +1,43 @@
 import logo from './logo.svg';
 import './App.css';
 import Algo from './components/Algo';
+import NavBar from './components/NavBar';
+import { useState, useEffect} from 'react';
+import CrearTarea from './components/CrearTarea';
+import Tarea from './components/Tarea';
 
 function App() {
+  const [bCrear, setMostrarCrear] = useState(false);
+  const [tareas, setTareas] = useState([]);
+  useEffect(() => {
+    const storedTareas = JSON.parse(localStorage.getItem('tareas')) || [];
+    setTareas(storedTareas);
+  }, []);
+
+  const mostrarCrear = () => {
+    setMostrarCrear(true);
+  };
+
+  const ocultarCrear = () => {
+    setMostrarCrear(false);
+  };
+  const crearTarea = (tarea, responsable) => {
+    const nuevaTarea = { tarea, responsable };
+    const nuevasTareas = [...tareas, nuevaTarea];
+    setTareas(nuevasTareas);
+    localStorage.setItem('tareas', JSON.stringify(nuevasTareas));
+    ocultarCrear()
+  };
   return (
     <div className="App">
-      <header className="App-header">
-        <Algo/>
-        <nav>
-          
-        </nav>
-        <img src={logo} className="App-logo" alt="logo" />
-        <h1 class="display-1">mi titulo</h1>
-        <p>
-          Edit aa <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {console.log("App render")}
+      <NavBar mostrarCrear={mostrarCrear}/>
+      <CrearTarea bCrear={bCrear} ocultarCrear={ocultarCrear} crearTarea={crearTarea}/>
+      {/* Mapea las tareas y renderiza un componente TareaCard por cada una */}
+      {tareas.map((_tarea, index) => (
+        <Tarea tarea={_tarea.tarea} />
+
+      ))}
     </div>
   );
 }

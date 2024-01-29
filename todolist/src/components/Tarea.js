@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 const Tarea = (props) => {
-  const [nombreTarea, setNombreTarea] = useState("Hacer algo");
-  const [responsableTarea, setResponsableTarea] = useState("Juan");
+  const [nombreTarea, setNombreTarea] = useState(props.tarea);
+  const [responsableTarea, setResponsableTarea] = useState(props.responsable);
   const [estadoTarea, setEstadoTarea] = useState("No Iniciada");
 
   useEffect(() => {

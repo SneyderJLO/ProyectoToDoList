@@ -32,8 +32,17 @@ function App() {
   };
 
   const crearTarea = (tarea, responsable) => {
+    console.log("tarea: ")
+    console.log(tarea)
+    console.log("Responsable:")
+    console.log(responsable)
     const nuevaTarea = { tarea, responsable };
+    console.log("nuevaTarea:")
+    console.log(nuevaTarea)
+    console.log("tareas:")
+    console.log(tareas)
     const nuevasTareas = [...tareas, nuevaTarea];
+
     setTareas(nuevasTareas);
     localStorage.setItem('tareas', JSON.stringify(nuevasTareas));
     ocultarCrear()
@@ -49,6 +58,8 @@ function App() {
           {tareas.map((tarea, index) => (
             <div className="col-md-3 mb-3" key={index}>
               <Tarea
+                tarea={tarea.tarea}
+                responsable={tarea.responsable}
                 tareaIndex={index}
                 onEliminar={eliminarTarea}
               />
